@@ -1,7 +1,7 @@
-import { FlexBox } from 'components/CoreEntry/App.styles'
+import { Flex } from '@mantine/core'
 import { Typography } from 'components/Typography'
 import { useCreateEntityState } from 'hooks/createEntity'
-import { Button } from 'screens/CreateEntity/Components'
+import { Button } from 'pages/CreateEntity/Components'
 import React, { useMemo } from 'react'
 import { SetupActionsForm } from './SetupActionsForm'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -12,32 +12,29 @@ const SetupActions: React.FC = () => {
   const { proposal, updateProposal } = useCreateEntityState()
 
   const actions = useMemo(() => proposal?.actions ?? [], [proposal])
-  const validActions = useMemo(() => actions.filter((item) => item.data), [actions])
 
   const handleBack = () => {
-    navigate(`/entity/${entityId}/dashboard/governance/${coreAddress}/info`)
+    navigate(`/entity/${entityId}/dashboard/governance/${coreAddress}/create/setup`)
   }
   const handleContinue = () => {
-    navigate(`/entity/${entityId}/dashboard/governance/${coreAddress}/page`)
+    navigate(`/entity/${entityId}/dashboard/governance/${coreAddress}/create/review`)
   }
 
   return (
-    <FlexBox width={'100%'} $direction='column' $gap={15} $justifyContent='center'>
+    <Flex w={'100%'} direction='column' gap={32} justify={'center'}>
       <Typography variant='secondary' size='2xl'>
-        The following {validActions.length} actions get executed when the proposal passes.
+        Create new proposal
       </Typography>
 
       <SetupActionsForm actions={actions} setActions={(actions) => updateProposal({ ...proposal, actions })} />
 
-      <FlexBox width='100%' $justifyContent='flex-start' $gap={4}>
+      <Flex w='100%' justify={'flex-start'} gap={4}>
         <Button variant='secondary' onClick={handleBack}>
           Back
         </Button>
-        <Button onClick={handleContinue} disabled={validActions.length === 0}>
-          Continue
-        </Button>
-      </FlexBox>
-    </FlexBox>
+        <Button onClick={handleContinue}>Continue</Button>
+      </Flex>
+    </Flex>
   )
 }
 
